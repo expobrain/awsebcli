@@ -213,6 +213,7 @@ flag_text = {
     # Setenv
     'setenv.vars': 'space separated list in format: VAR_NAME=KEY',
     'setenv.env': 'environment name',
+    'setenv.timeout': 'set the timeout. Default 4 minutes',
 
     # SSH
     'ssh.number': 'index of instance in list',

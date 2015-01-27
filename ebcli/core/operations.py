@@ -854,8 +854,11 @@ def get_logs(env_name, info_type, region, do_zip=False, instance_id=None):
             print_from_url(url)
 
 
-def setenv(app_name, env_name, var_list, region):
+def setenv(app_name, env_name, var_list, region, timeout):
     namespace = 'aws:elasticbeanstalk:application:environment'
+
+    if not timeout or timeout < 0:
+        timeout = 60 * 4
 
     options = []
     options_to_remove = []
@@ -879,7 +882,7 @@ def setenv(app_name, env_name, var_list, region):
                                                  remove=options_to_remove)
     try:
         request_id = result
-        wait_and_print_events(request_id, region, timeout_in_seconds=60*4)
+        wait_and_print_events(request_id, region, timeout_in_seconds=timeout)
     except TimeoutError:
         io.log_error(strings['timeout.error'])
 
