@@ -208,6 +208,7 @@ flag_text = {
     # Scale
     'scale.number': 'number of desired instances',
     'scale.force': 'skip confirmation prompt',
+    'scale.timeout': 'set the timeout. Default 5 minutes',
 
     # Setenv
     'setenv.vars': 'space separated list in format: VAR_NAME=KEY',

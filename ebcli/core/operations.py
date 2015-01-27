@@ -468,7 +468,10 @@ def get_application_names(region):
     return [n.name for n in app_list]
 
 
-def scale(app_name, env_name, number, confirm, region):
+def scale(app_name, env_name, number, confirm, region, timeout):
+    if not timeout or timeout < 0:
+        timeout = 60 * 5
+
     options = []
     # get environment
     env = elasticbeanstalk.describe_configuration_settings(
@@ -506,7 +509,7 @@ def scale(app_name, env_name, number, confirm, region):
         )
     request_id = elasticbeanstalk.update_environment(env_name, options, region)
     try:
-        wait_and_print_events(request_id, region, timeout_in_seconds=60*5)
+        wait_and_print_events(request_id, region, timeout_in_seconds=timeout)
     except TimeoutError:
         io.log_error(strings['timeout.error'])
 
