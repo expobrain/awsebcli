@@ -777,7 +777,11 @@ def print_environment_vars(app_name, env_name, region):
         io.echo('    ', key, '=', value)
 
 
-def logs(env_name, info_type, region, do_zip=False, instance_id=None):
+def logs(env_name, info_type, region, do_zip=False, instance_id=None,
+         timeout=None):
+    if not timeout or timeout < 0:
+        timeout = 60 * 2
+
     # Request info
     result = elasticbeanstalk.request_environment_info(env_name, info_type,
                                                        region=region)
@@ -785,7 +789,7 @@ def logs(env_name, info_type, region, do_zip=False, instance_id=None):
     # Wait for logs to finish
     request_id = result['ResponseMetadata']['RequestId']
     wait_and_print_events(request_id, region,
-                        timeout_in_seconds=60*2, sleep_time=1)
+                        timeout_in_seconds=timeout, sleep_time=1)
 
     get_logs(env_name, info_type, region, do_zip=do_zip,
              instance_id=instance_id)

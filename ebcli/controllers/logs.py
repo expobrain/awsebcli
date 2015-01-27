@@ -28,6 +28,7 @@ class LogsController(AbstractBaseController):
             (['-z', '--zip'], dict(
                 action='store_true', help=flag_text['logs.zip'])),
             (['-i', '--instance'], dict(help=flag_text['logs.instance'])),
+            (['--timeout'], dict(type=int, help=flag_text['logs.timeout'])),
         ]
         epilog = strings['logs.epilog']
 
@@ -37,6 +38,7 @@ class LogsController(AbstractBaseController):
         all = self.app.pargs.all
         instance = self.app.pargs.instance
         zip = self.app.pargs.zip
+        timeout = self.app.pargs.timeout
 
         if all and instance:
             raise InvalidOptionsError(strings['logs.allandinstance'])
@@ -52,4 +54,4 @@ class LogsController(AbstractBaseController):
             do_zip = False
 
         operations.logs(env_name, info_type, region, do_zip=do_zip,
-                        instance_id=instance)
+                        instance_id=instance, timeout=timeout)

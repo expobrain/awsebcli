@@ -204,6 +204,7 @@ flag_text = {
     'logs.all': 'retrieve all logs',
     'logs.zip': 'retrieve all logs as .zip',
     'logs.instance': 'instance id',
+    'logs.timeout': 'set the timeout. Default 2 minutes',
 
     # Scale
     'scale.number': 'number of desired instances',
