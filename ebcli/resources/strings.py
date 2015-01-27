@@ -224,6 +224,7 @@ flag_text = {
     'terminate.force': 'skip confirmation prompt',
     'terminate.all': 'terminate everything',
     'terminate.nohang': 'return immediately, do not wait for terminate to be completed',
+    'terminate.timeout': 'set the timeout. Default 15 minutes',
 
     # use
     'use.env': 'environment name',

@@ -29,6 +29,8 @@ class TerminateController(AbstractBaseController):
                              help=flag_text['terminate.all'])),
             (['-nh', '--nohang'], dict(action='store_true',
                                        help=flag_text['terminate.nohang'])),
+            (['--timeout'], dict(type=int,
+                                 help=flag_text['terminate.timeout']))
         ]
         usage = AbstractBaseController.Meta.usage.replace('{cmd}', label)
         epilog = strings['terminate.epilog']
@@ -39,11 +41,12 @@ class TerminateController(AbstractBaseController):
         force = self.app.pargs.force
         all = self.app.pargs.all
         nohang = self.app.pargs.nohang
+        timeout = self.app.pargs.timeout
 
         if all:
             cleanup = False if self.app.pargs.region else True
             operations.delete_app(app_name, region, force, nohang=nohang,
-                                  cleanup=cleanup)
+                                  cleanup=cleanup, timeout=timeout)
 
         else:
             try:
@@ -63,4 +66,5 @@ class TerminateController(AbstractBaseController):
                 io.validate_action(prompts['terminate.validate'], env_name)
 
 
-            operations.terminate(env_name, region, nohang=nohang)
+            operations.terminate(env_name, region, nohang=nohang,
+                                 timeout=timeout)

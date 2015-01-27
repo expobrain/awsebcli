@@ -671,8 +671,12 @@ def clone_env(app_name, env_name, clone_name, cname, label, scale,
         #try again
 
 
-def delete_app(app_name, region, force, nohang=False, cleanup=True):
+def delete_app(app_name, region, force, nohang=False, cleanup=True,
+               timeout=None):
     app = elasticbeanstalk.describe_application(app_name, region)
+
+    if not timeout or timeout < 0:
+        timeout = 60 * 15
 
     if 'Versions' not in app:
         app['Versions'] = []
@@ -700,7 +704,7 @@ def delete_app(app_name, region, force, nohang=False, cleanup=True):
         fileoperations.clean_up()
     if not nohang:
         wait_and_print_events(request_id, region, sleep_time=1,
-                              timeout_in_seconds=60*15)
+                              timeout_in_seconds=timeout)
 
 
 def deploy(app_name, env_name, region, version, label, message, timeout):
@@ -891,7 +895,10 @@ def save_file_from_url(url, location, filename):
     return fileoperations.save_to_file(result, location, filename)
 
 
-def terminate(env_name, region, nohang=False):
+def terminate(env_name, region, nohang=False, timeout=None):
+    if not timeout or timeout < 0:
+        timeout = 60 * 5
+
     request_id = elasticbeanstalk.terminate_environment(env_name, region)
 
     # disassociate with branch if branch default
@@ -900,8 +907,7 @@ def terminate(env_name, region, nohang=False):
         set_environment_for_current_branch(None)
 
     if not nohang:
-        wait_and_print_events(request_id, region,
-                              timeout_in_seconds=60*5)
+        wait_and_print_events(request_id, region, timeout_in_seconds=timeout)
 
 
 def save_env_file(api_model):
