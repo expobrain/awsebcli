@@ -81,7 +81,7 @@ strings = {
     'exit.noregion': 'The EB CLI cannot find a default region. Run "eb init" or add the region using the "--region" flag.',
     # Typical response when an environment is in pending state
     'exit.invalidstate': 'The operation cannot be completed at this time due to a pending operation. Try again later.',
-    'branch.noenv': 'This branch does not have a default environment. You must either specify an environment by typing ' 
+    'branch.noenv': 'This branch does not have a default environment. You must either specify an environment by typing '
                     '"eb {cmd} my-env-name" or set a default environment by typing "eb use my-env-name".',
     'ssh.notpresent': 'SSH is not installed. You must install SSH before continuing.',
     'ssh.filenotfound': 'The EB CLI cannot find your SSH key file for keyname "{key-name}".'
@@ -186,6 +186,7 @@ flag_text = {
     'deploy.version': 'existing version label to deploy',
     'deploy.label': 'label name which version will be given',
     'deploy.message': 'description for version',
+    'deploy.timeout': 'set the timeout. Default 5 minutes',
 
     # Events
     'events.follow': 'wait and continue to print events as they come',

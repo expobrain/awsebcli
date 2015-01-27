@@ -700,13 +700,16 @@ def delete_app(app_name, region, force, nohang=False, cleanup=True):
                               timeout_in_seconds=60*15)
 
 
-def deploy(app_name, env_name, region, version, label, message):
+def deploy(app_name, env_name, region, version, label, message, timeout):
     if region:
         region_name = region
     else:
         region_name = 'DEFAULT'
 
     io.log_info('Deploying code to ' + env_name + " in region " + region_name)
+
+    if not timeout or timeout < 0:
+        timeout = 60 * 5
 
     if version:
         app_version_label = version
@@ -719,7 +722,7 @@ def deploy(app_name, env_name, region, version, label, message):
     request_id = elasticbeanstalk.update_env_application_version(env_name,
                                                     app_version_label, region)
 
-    wait_and_print_events(request_id, region, 60*5)
+    wait_and_print_events(request_id, region, timeout)
 
 
 def status(app_name, env_name, region, verbose):

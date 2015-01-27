@@ -29,7 +29,8 @@ class DeployController(AbstractBaseController):
                 help=flag_text['deploy.env'])),
             (['--version'], dict(help=flag_text['deploy.version'])),
             (['-l', '--label'], dict(help=flag_text['deploy.label'])),
-            (['-m', '--message'], dict(help=flag_text['deploy.message']))
+            (['-m', '--message'], dict(help=flag_text['deploy.message'])),
+            (['--timeout'], dict(help=flag_text['deploy.timeout'], type=int))
         ]
         usage = AbstractBaseController.Meta.usage.replace('{cmd}', label)
 
@@ -40,6 +41,7 @@ class DeployController(AbstractBaseController):
         version = self.app.pargs.version
         label = self.app.pargs.label
         message = self.app.pargs.message
+        timeout = self.app.pargs.timeout
 
         if version and (message or label):
             raise InvalidOptionsError(strings['deploy.invalidoptions'])
@@ -59,7 +61,8 @@ class DeployController(AbstractBaseController):
         #     # deploy to every environment listed
         #     ## Right now you can only list one
 
-        operations.deploy(app_name, env_name, region, version, label, message)
+        operations.deploy(app_name, env_name, region, version, label, message,
+                          timeout)
 
     def complete_command(self, commands):
         #ToDo, edit this if we ever support multiple env deploys
